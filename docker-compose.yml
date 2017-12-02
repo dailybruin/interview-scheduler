@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+ db:
+  image: postgres
+  expose:
+    - 5432
+  environment:
+    POSTGRES_DB: interview
+    POSTGRES_USER: dev
+    POSTGRES_PASSWORD: password
