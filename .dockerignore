@@ -1,0 +1,9 @@
+node_modules/
+.git/
+
+.dockerignore
+
+.gitignore
+.env
+.eslintrc
+.editorconfig
