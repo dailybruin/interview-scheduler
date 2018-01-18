@@ -17,6 +17,7 @@ pids
 
 # Dependency directories
 node_modules/
+frontned/node_modules/
 jspm_packages/
 
 # Optional npm cache directory
