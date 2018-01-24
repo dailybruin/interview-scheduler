@@ -4,12 +4,24 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-  }, {
+    startTime: {
+      type: DataTypes.STRING,
+      //allowNull: false,
+    },
+    endTime: {
+      type: DataTypes.STRING,
+      //allowNull: false,
+    },
+  }, 
+  {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+        console.log("\n\nAsssociation");
+        models.Event.hasMany(models.User);
       }
     }
   });
+  sequelize.sync();
   return Event;
 };
