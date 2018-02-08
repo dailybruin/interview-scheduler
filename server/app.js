@@ -15,12 +15,13 @@ dotenv.config();
 
 app.use(logger('dev'));
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 /*Passport Stuff*/
-app.use(cookieParser());
-app.use(session({secret: 'key', resave: true, saveUninitialized: true, 
+
+app.use(session({secret: 'key', resave: true, saveUninitialized: false, 
 	store: new SequelizeStore({
       db: sequelize,
     })

@@ -22,23 +22,42 @@ module.exports = (app) => {
 
     app.get('/api/events', eventsController.list);
 
-    /* Routes for google oauth */
+
+    /* Routes for google oauth and passport*/
     app.get('/auth/google',
-	  passport.authenticate('google', {
-	    scope: ['profile', 'email', 'https://www.googleapis.com/auth/calendar'],
-	    hd: 'g.ucla.edu',
-	  })
+	  	passport.authenticate('google', {
+	    	scope: ['profile', 'email', 'https://www.googleapis.com/auth/calendar'],
+	    	hd: 'g.ucla.edu',
+		}),
+		function(req, res) {
+		    // Explicitly save the session before redirecting!
+		    req.session.save(() => {
+		      	res.redirect('/success');
+		    })
+		}
 	);
 
 	app.get('/auth/google/callback',
 	  passport.authenticate('google', { failureRedirect: '/'}),
 	  function(req, res) {
-		    res.redirect('/');
+	  	 req.session.save(() => {
+	      res.redirect('/api/calendar');
+	    })
+	});
+	app.get('/logout', function(req, res){
+	  req.logout();
+	  res.redirect('/');
 	});
 
-
+	/* Test api for calenedar editting */
 	/* Example to test to make sure user is logged in, gets the user calendar*/
 	app.get('/api/calendar', usersController.isAuthenticated, usersController.getCalendar);
+	//returns calendar list of stuff
+	app.get('/api/calendar/:calendarID', usersController.isAuthenticated, usersController.getPrimaryCalendar); 
+	app.get('/api/calendar/:calendarID/events', usersController.isAuthenticated, usersController.getPrimaryCalendarEvents);
+	/* Get your weekly schedule */
+	app.get('/api/schedule', usersController.isAuthenticated, usersController.getSchedule);
+
 };
 
 

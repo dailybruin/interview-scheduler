@@ -15,11 +15,11 @@ module.exports = (sequelize, DataTypes) => {
   }, 
   {
     classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        console.log("\n\nAsssociation");
-        models.Event.hasMany(models.User);
-      }
+      // associate: function(models) {
+      //   // associations can be defined here
+      //   console.log("\n\nAsssociation");
+      //   models.Event.hasMany(models.User);
+      // }
     }
   });
   sequelize.sync();
