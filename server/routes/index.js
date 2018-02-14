@@ -53,10 +53,18 @@ module.exports = (app) => {
 	/* Example to test to make sure user is logged in, gets the user calendar*/
 	app.get('/api/calendar', usersController.isAuthenticated, usersController.getCalendar);
 	//returns calendar list of stuff
-	app.get('/api/calendar/:calendarID', usersController.isAuthenticated, usersController.getPrimaryCalendar); 
-	app.get('/api/calendar/:calendarID/events', usersController.isAuthenticated, usersController.getPrimaryCalendarEvents);
+	app.get('/api/calendar/:calendarID', usersController.isAuthenticated, usersController.getCalendarID); 
+	app.get('/api/calendar/:calendarID/events', usersController.isAuthenticated, usersController.getCalendarIDEvents);
+
+
+	app.post('/api/calendar/:calendarID/events', usersController.isAuthenticated, usersController.insertCalendarIDEvents);
 	/* Get your weekly schedule */
 	app.get('/api/schedule', usersController.isAuthenticated, usersController.getSchedule);
+	// app.post('/api/schedule', usersController.isAuthenticated, usersController.updateSchedule);
+
+	app.post('/api/schedule', usersController.updateSchedule);//delete later bc auth
+
+
 
 };
 

@@ -13,22 +13,23 @@ module.exports = (sequelize, DataTypes) => {
     },
     schedule: { 
       type: DataTypes.STRING, 
-      get: function() {
+      get() {
         return JSON.parse(this.getDataValue('schedule'));
       }, 
-      set: function(val) {
-        return this.setDataValue('schedule', JSON.stringify(val));
+      set(val) {
+        return this.setDataValue('schedule', val);
       }
     },
   },
   {
   	classMethods: {
-      // associate: function(models) {
+      associate: function(models) {
       //   // associations can be defined here
-      //   models.User.hasMany(models.Event);
-      // }
+        User.hasMany(models.Event);
+      }
     }
   });
   sequelize.sync();
+  
   return User;
 };

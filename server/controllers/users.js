@@ -38,39 +38,7 @@ passport.use(
     } else {
       done(new Error('Invalid host domain.'));
     }
-
   }
-  // function(token, refreshToken, profile, done) {
-  //   process.nextTick(function() {
-  //             // try to find the user based on their google id
-  //     User.findOne({ 'google.id' : profile.id }, function(err, user) {
-  //          if (err)
-  //             return done(err);
-
-  //                 if (user) {
-
-  //                     // if a user is found, log them in
-  //                     return done(null, user);
-  //                 } else {
-  //                     // if the user isnt in our database, create a new user
-  //                     var newUser          = new User();
-
-  //                     // set all of the relevant information
-  //                     newUser.google.id    = profile.id;
-  //                     newUser.google.token = token;
-  //                     newUser.google.name  = profile.displayName;
-  //                     newUser.google.email = profile.emails[0].value; // pull the first email
-
-  //                     // save the user
-  //                     newUser.save(function(err) {
-  //                         if (err)
-  //                             throw err;
-  //                         return done(null, newUser);
-  //                     });
-  //                 }
-  //             });
-  //       });
-  // }
 ));
 
 module.exports = {
@@ -87,25 +55,44 @@ module.exports = {
       .then(response => res.status(201).send(response.data))
       .catch(error => res.status(400).send(error));
   },
-  getPrimaryCalendar(req, res) { //pass in paramter instead of primary
-      console.log("\n\n", req.user.id);
+  getCalendarID(req, res) { //pass in paramter instead of primary
       var AuthStr = "Bearer " + req.user.token;
       axios.get("https://www.googleapis.com/calendar/v3/calendars/" + req.params.calendarID, { 'headers': { 'Authorization': AuthStr}})
       .then(response => res.status(201).send(response.data))
       .catch(error => res.status(400).send(error));
   },
-  getPrimaryCalendarEvents(req, res) { //pass in paramter instead of primary
+  getCalendarIDEvents(req, res) { //pass in paramter instead of primary
       var AuthStr = "Bearer " + req.user.token;
       axios.get("https://www.googleapis.com/calendar/v3/calendars/" + req.params.calendarID + "/events", { 'headers': { 'Authorization': AuthStr}})
       .then(response => res.status(201).send(response.data.items))
       .catch(error => res.status(400).send(error));
   },
+  insertCalendarIDEvents(req, res) { //TODO
+    //can possibly load events library to make it easier?
+      // var AuthStr = "Bearer " + req.user.token;
+      // axios.post("https://www.googleapis.com/calendar/v3/calendars/" + req.params.calendarID + "/events", { 'headers': { 'Authorization': AuthStr}, 'data': req.body.event})
+      // .then(response => res.status(201).send(response))
+      // .catch(error => res.status(400).send(error));
+  },
   getSchedule(req, res) {
     return User
-      .findAll({where: {id:req.user.id}})
+      .findById(req.user.id)
       .then(user => {
-        res.status(201).send(user);
+        res.status(201).send(user.get('schedule'));
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(400).send(error)});
+  },
+  updateSchedule(req, res) {  //use req.user instead if we doing authenticated
+    return User
+      .findById(req.body.id)
+      .then(user => {
+        user.set('schedule', req.body.schedule);
+        user.save();
+        res.status(201).send(user.schedule);
       })
       .catch(error => res.status(400).send(error));
+
   },
 }
