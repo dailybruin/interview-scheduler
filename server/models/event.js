@@ -1,4 +1,8 @@
+
+
 module.exports = (sequelize, DataTypes) => {
+  sequelize.sync();
+
   const Event = sequelize.define('Event', {
     title: {
       type: DataTypes.STRING,
@@ -13,3 +17,4 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Event;
 };
+
