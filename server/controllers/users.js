@@ -1,6 +1,7 @@
 const passport   = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require("../models").User;
+const Event = require("../models").Event;
 const axios = require("axios");
 
 const callbackURL = "http://127.0.0.1:8000/auth/google/callback";
@@ -30,9 +31,9 @@ passport.use(
       const [user] = await User.findOrCreate({
         where: { id: profile.id },
       });
-      console.log('\n\n',  user);
       user.name = profile.displayName;
       user.token = accessToken;
+
       await user.save();
       return done(null, user);
     } else {
@@ -95,4 +96,21 @@ module.exports = {
       .catch(error => res.status(400).send(error));
 
   },
+  // createEventAssociate(req, res) {
+    // return User
+    // .then(user => {
+    //       Event
+    //     .create({
+    //       title: "1",
+    //     })
+    //     .then(event => {
+    //       res.status(201).send(event);
+    //     })
+    //     .catch(error => res.status(400).send(error));
+    //     })
+    //   .catch(error => {
+    //   }
+    //   .findById(req.user.id)
+      
+  // },
 }

@@ -1,6 +1,12 @@
 const eventsController = require('../controllers/events');//.events;
 const usersController = require('../controllers/users');//.users;
 const passport = require("passport");//delete later if needed
+const Event = require('../models').Event;
+const User = require('../models').User;
+const UserEvent = require('../models').UserEvent;
+
+Event.belongsToMany(User, {through: UserEvent, as: "user"});
+User.belongsToMany(Event, { through: UserEvent, as: 'event' });
 
 module.exports = (app) => {
 
@@ -15,13 +21,6 @@ module.exports = (app) => {
     app.get('/api', (req, res ) => res.status(200).send({
         message: 'Interview scheduler API',
     }));
-
-
-    /* Test api for events */
-    app.post('/api/events', eventsController.create);
-
-    app.get('/api/events', eventsController.list);
-
 
     /* Routes for google oauth and passport*/
     app.get('/auth/google',
@@ -55,8 +54,6 @@ module.exports = (app) => {
 	//returns calendar list of stuff
 	app.get('/api/calendar/:calendarID', usersController.isAuthenticated, usersController.getCalendarID); 
 	app.get('/api/calendar/:calendarID/events', usersController.isAuthenticated, usersController.getCalendarIDEvents);
-
-
 	app.post('/api/calendar/:calendarID/events', usersController.isAuthenticated, usersController.insertCalendarIDEvents);
 	/* Get your weekly schedule */
 	app.get('/api/schedule', usersController.isAuthenticated, usersController.getSchedule);
@@ -65,6 +62,63 @@ module.exports = (app) => {
 	app.post('/api/schedule', usersController.updateSchedule);//delete later bc auth
 
 
+	/* Test api for events */
+    // app.post('/api/events', eventsController.create);
+
+    // app.get('/api/events', eventsController.list);
+
+	//test for associations
+	app.get('/test/associate', function(req, res) {
+		Event
+	      .create({
+	        title: "1",
+	      })
+	      .then(event => {
+	      	event.addUser(req.user.id);
+	      	res.status(201).send(event);
+	      })
+	      .catch(error => res.status(400).send(error));
+
+	});
+	app.get('/test/associate1', function(req, res) {
+		Event
+		.create({
+			title: "2",
+		})
+		.then(event => {
+			event.addUser(req.user.id, { through : { interviewer: "1" }});
+			res.status(201).send(event);
+		})
+		.catch(error => res.status(400).send(error));
+
+	});
+
+	//get all events that user belongs to
+	app.get('/test/events', function(req, res, next) {
+		User.findById(req.user.id, {
+			include: [{all: true}]
+		})
+		.then(user => {
+			events = [];
+			user.event.forEach(eventInst => {
+				events.push(eventInst);
+			});
+	      	res.status(201).send(user.event);
+	    })
+	    .catch(error => res.status(400).send(error));
+	})
+	app.get('/test/users', function(req, res, next) {
+		Event.findAll({
+			include: [{all: true}]
+		})
+		.then(events => {
+			// user.event.forEach(eventInst => {
+			// 	events.push(eventInst);
+			// });
+	      	res.status(201).send(events);
+	    })
+	    .catch(error => res.status(400).send(error));
+	})
 
 };
 

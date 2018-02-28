@@ -21,15 +21,18 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
   },
-  {
-  	classMethods: {
-      associate: function(models) {
-      //   // associations can be defined here
-        User.hasMany(models.Event);
-      }
-    }
-  });
+  // {
+  // 	// classMethods: {
+  //  //    associate: function(models) {
+  //  //    //   // associations can be defined here
+  //  //      User.hasMany(models.Event);
+  //  //    }
+  //  //  }
+  // }
+  );
+  // User.associate = function(models) {
+  //   User.belongsToMany(models.Event, { through: 'UserEvent', as: 'event' });
+  // };
   sequelize.sync();
-  
   return User;
 };

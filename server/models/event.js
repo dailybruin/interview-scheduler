@@ -13,15 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       //allowNull: false,
     },
   }, 
-  {
-    classMethods: {
-      associate: function(models) {
-      // associations can be defined here
-        Event.hasMany(models.User);
-      }
-    }
-  });
-  
+  // {
+  //   classMethods: {
+  //     associate: function(models) {
+  //     // associations can be defined here
+  //       Event.belongsTo(models.User});
+  //     }
+  //   }
+  //}
+  );
+  // Event.associate = function(models) {
+  //   Event.belongsToMany(models.User, {through: "UserEvent", as: "user"});
+  // };
   sequelize.sync();
   return Event;
 };
