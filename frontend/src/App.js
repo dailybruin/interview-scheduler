@@ -7,17 +7,10 @@ import {
 import logo from './logo.svg';
 import './App.css';
 
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-  </div>
-)
+import Button from './components/button.js';
+import Home from './containers/home.js';
+import Login from './containers/login.js';
 
-const LoginScreen = () => (
-  <div>
-    <h2>Login</h2>
-  </div>
-)
 
 class App extends Component {
   render() {
@@ -31,13 +24,14 @@ class App extends Component {
           <p className="App-intro">
             To get started, edit <code>src/App.js</code> and save to reload.
           </p>
-          
+
           <ul>
             <li><Link to="/">Login</Link></li>
             <li><Link to="/home">Home</Link></li>
+            <Button primary> Test </Button>
           </ul>
-      
-          <Route exact path="/" component={LoginScreen}/>
+
+          <Route exact path="/" component={Login}/>
           <Route path="/home" component={Home}/>
         </div>
       </Router>
