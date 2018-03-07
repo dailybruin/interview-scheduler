@@ -5,8 +5,8 @@ const Event = require('../models').Event;
 const User = require('../models').User;
 const UserEvent = require('../models').UserEvent;
 
-Event.belongsToMany(User, {through: UserEvent, as: "user"});
-User.belongsToMany(Event, { through: UserEvent, as: 'event' });
+// Event.belongsToMany(User, {through: UserEvent, as: "user"});
+// User.belongsToMany(Event, { through: UserEvent, as: 'event' });
 
 module.exports = (app) => {
 
@@ -59,6 +59,9 @@ module.exports = (app) => {
 	app.get('/api/schedule', usersController.isAuthenticated, usersController.getSchedule);
 	// app.post('/api/schedule', usersController.isAuthenticated, usersController.updateSchedule);
 
+
+
+
 	app.post('/api/schedule', usersController.updateSchedule);//delete later bc auth
 
 
@@ -94,27 +97,19 @@ module.exports = (app) => {
 	});
 
 	//get all events that user belongs to
-	app.get('/test/events', function(req, res, next) {
+	app.get('/test/events', usersController.isAuthenticated, function(req, res, next) {
 		User.findById(req.user.id, {
-			include: [{all: true}]
+			include: [{model: Event, as: 'event'}]
 		})
-		.then(user => {
-			events = [];
-			user.event.forEach(eventInst => {
-				events.push(eventInst);
-			});
-	      	res.status(201).send(user.event);
-	    })
+	 	.then(res.send.bind(res))
 	    .catch(error => res.status(400).send(error));
 	})
+
 	app.get('/test/users', function(req, res, next) {
 		Event.findAll({
 			include: [{all: true}]
 		})
 		.then(events => {
-			// user.event.forEach(eventInst => {
-			// 	events.push(eventInst);
-			// });
 	      	res.status(201).send(events);
 	    })
 	    .catch(error => res.status(400).send(error));

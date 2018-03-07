@@ -1,8 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const UserEvent = sequelize.define('UserEvent', {
   	interviewer: DataTypes.INTEGER,
-    UserId: DataTypes.INTEGER,
-    EventId: DataTypes.INTEGER,
 
   },
   // {
