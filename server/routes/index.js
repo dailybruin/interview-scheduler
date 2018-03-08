@@ -121,7 +121,7 @@ module.exports = (app) => {
 
 	app.post('/api/events', eventsController.create);
 
-    app.get('/api/events/', eventsController.read);
+    app.get('/api/events/:id', eventsController.read);
 
     app.delete('/api/events/:id', eventsController.delete);
 
