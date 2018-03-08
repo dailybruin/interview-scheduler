@@ -7,6 +7,10 @@ const UserEvent = require('../models').UserEvent;
 
 // Event.belongsToMany(User, {through: UserEvent, as: "user"});
 // User.belongsToMany(Event, { through: UserEvent, as: 'event' });
+const express = require('express');
+var app = express();
+const { Client, Query } = require('pg');
+const router = express.Router();
 
 module.exports = (app) => {
 
@@ -103,7 +107,7 @@ module.exports = (app) => {
 		})
 	 	.then(res.send.bind(res))
 	    .catch(error => res.status(400).send(error));
-	})
+	});
 
 	app.get('/test/users', function(req, res, next) {
 		Event.findAll({
@@ -113,9 +117,15 @@ module.exports = (app) => {
 	      	res.status(201).send(events);
 	    })
 	    .catch(error => res.status(400).send(error));
-	})
+	});
+
+	app.post('/api/events', eventsController.create);
+
+    app.get('/api/events/', eventsController.read);
+
+    app.delete('/api/events/:id', eventsController.delete);
+
+    app.put('/api/events/:id', eventsController.update);
 
 };
 
-
-//need to see when to refresh the google oauth token too

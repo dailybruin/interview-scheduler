@@ -1,4 +1,7 @@
+
+
 module.exports = (sequelize, DataTypes) => {
+
   const Event = sequelize.define('Event', {
     title: {
       type: DataTypes.STRING,
@@ -25,5 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   Event.associate = function(models) {
     Event.belongsToMany(models.User, {through: "UserEvent", as: "user"});
   };
+  sequelize.sync();
   return Event;
 };
+

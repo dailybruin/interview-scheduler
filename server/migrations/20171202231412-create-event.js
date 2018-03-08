@@ -20,6 +20,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Events');
