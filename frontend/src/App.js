@@ -7,9 +7,12 @@ import {
 import logo from './logo.svg';
 import './App.css';
 
-import Button from './components/button.js';
 import Home from './containers/home.js';
 import Login from './containers/login.js';
+import Settings from './containers/settings.js';
+
+import Button from './components/button.js';
+import NavBar from './components/navbar.js'
 
 
 class App extends Component {
@@ -17,26 +20,24 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
-          </header>
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
-
-          <ul>
-            <li><Link to="/">Login</Link></li>
-            <li><Link to="/home">Home</Link></li>
-            <Button primary> Test </Button>
-          </ul>
-
-          <Route exact path="/" component={Login}/>
+          <NavBar/>
+          <Route exact path={"/"} component={Login}/>
           <Route path="/home" component={Home}/>
+          <Route path="/settings" component={Settings}/>
+
         </div>
       </Router>
     );
   }
 }
+
+// Redux later
+// const mapStateToProps = state => {
+//   const {loggedIn} = state.Auth;
+//   return {
+//     loggedIn,
+//   };
+// };
+
 
 export default App;
