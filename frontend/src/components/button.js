@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
-import './button.scss';
+import React from 'react';
+import './button.css';
 
-const Button = ({children}) => {
+const Button = ({primary, children}) => {
   const k = [];
+  if (primary) {
+    k.push('primary');
+  }
   return(
     <button className={k.join(' ')}>{children}</button>
-  )
+  );
 }
 
 export default Button;
