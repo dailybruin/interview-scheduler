@@ -5,8 +5,8 @@ const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.json`)[env];
 const db = {};
-
 let sequelize;
+
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
@@ -14,7 +14,7 @@ if (config.use_env_variable) {
     config.database, config.username, config.password, config
   );
 }
-
+console.log("running index.js");
 fs
   .readdirSync(__dirname)
   .filter(file =>
@@ -31,7 +31,7 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
-
+sequelize.sync();
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
